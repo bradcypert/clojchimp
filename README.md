@@ -1,10 +1,19 @@
 # clojchimp
 
-A Clojure library designed to ... well, that part is up to you.
+A lightweight Clojure library designed to interface with MailChimp's API.
 
 ## Usage
 
-FIXME
+```clojure
+;; Defining the client
+(def client (create-client "flarb@flarb.com" "api-key"))
+
+;; Request all campaigns
+(get-campaigns client)
+
+;; Create a new campaign
+(create-campaign client {:name "campaign-name"})
+```
 
 ## License
 
