@@ -104,9 +104,7 @@
 
   (delete-list [this id]
     (delete this
-            (str (generate-api-url this api-key) "/lists/" id)))
-
-  )
+            (str (generate-api-url this api-key) "/lists/" id))))
 
 (defn create-client [user api-key]
   (-> Client user api-key))
