@@ -36,24 +36,24 @@
 (defrecord ChimpClient [^String user ^String api-key]
   Client
   (GET [_ url]
-    (httpclient/get url {:basic-auth [user api-key]
-                         :as :clojure}))
+    (:body (httpclient/get url {:basic-auth [user api-key]
+                                :as :json})))
 
   (DELETE [_ url]
-    (httpclient/delete url {:basic-auth [user api-key]
-                            :as :clojure}))
+    (:body (httpclient/delete url {:basic-auth [user api-key]
+                                   :as :json})))
 
   (POST [_ url body]
-    (httpclient/post url {:basic-auth [user api-key]
-                          :as :clojure
-                          :form-params body
-                          :content-type :json}))
+    (:body (httpclient/post url {:basic-auth [user api-key]
+                                 :as :clojure
+                                 :form-params body
+                                 :content-type :json})))
 
   (PATCH [_ url body]
-    (httpclient/patch url {:basic-auth [user api-key]
-                           :as :clojure
-                           :form-params body
-                           :content-type :json}))
+    (:body (httpclient/patch url {:basic-auth [user api-key]
+                                  :as :clojure
+                                  :form-params body
+                                  :content-type :json})))
 
   (generate-api-url [_ api-key]
     (str "https://" (subs api-key
@@ -158,22 +158,3 @@
 
 (defn create-client [user api-key]
   (->ChimpClient user api-key))
-
-;; Use Case
-;; (get-campaigns (create-client "flarb@flarb.com" "ABC123us4"))
-;;
-;; (create-campaign
-;;   (create-client "flarb@flarb.com" "ABC123us4) {:name "campaign-name"})
-;;
-;; (-> (create-client "flarb@flarb.com" "ABC123us4")
-;;     (get-campaigns))
-;;
-;;
-;;
-;; Defining the client
-;;
-;; (def client (create-client "flarb@flarb.com" "ABC123us4"))
-;;
-;; (get-campaigns client)
-;;
-;; (create-campaign client {:name "campaign-name"})
