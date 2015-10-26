@@ -21,7 +21,13 @@
   (get-conversation-message [this campId id] "Returns a conversation for a campaign, given campaignID and the ID of the conversation")
   (get-lists [this] "Returns all lists for the user")
   (get-list [this id] "Returns a specific list by it's ID")
-  (delete-list [this id] "Deletes a list by ID"))
+  (delete-list [this id] "Deletes a list by ID")
+  (create-list [this body] "Creates a new list")
+  (update-list [this id body] "Updates a list by it's ID.")
+  (get-list-abuse-reports [this id] "Gets the abuse reports for a specific list by it's ID.")
+  (get-list-abuse-report [this listId id] "Get details for a specific report by ListID & ReportID")
+  (get-list-activity [this id] "Gets activity for a specific list")
+  (get-list-clients [this id] "Gets top email clients for a specific list"))
 
 (defrecord ChimpClient [user api-key]
   Client
@@ -88,7 +94,7 @@
 
   (get-conversation-messages [this campId]
     (get this
-         (str (generate-api-url this api-key) "/conversations/" id "/messages")))
+         (str (generate-api-url this api-key) "/conversations/" campId "/messages")))
 
   (get-conversation-message [this campId id]
     (get this
@@ -104,7 +110,31 @@
 
   (delete-list [this id]
     (delete this
-            (str (generate-api-url this api-key) "/lists/" id))))
+            (str (generate-api-url this api-key) "/lists/" id)))
+
+  (create-list [this body]
+    (post this
+          (str (generate-api-url this api-key) "/lists") body))
+
+  (update-list [this id body]
+    (patch this
+           (str (generate-api-url this api-key) "/lists/" id) body))
+
+  (get-list-abuse-reports [this id]
+    (get this
+         (str (generate-api-url this api-key) "/lists/" id "/abuse-reports")))
+
+  (get-list-abuse-report [this listId id]
+    (get this
+         (str (generate-api-url this api-key) "/lists/" listId "/abuse-reports/" id)))
+
+  (get-list-activity [this id]
+    (get this
+         (str (generate-api-url this api-key) "/lists/" id "/activity")))
+
+  (get-list-clients [this id]
+    (get this
+         (str (generate-api-url this api-key) "/list/" id "/clients"))))
 
 (defn create-client [user api-key]
   (-> Client user api-key))
