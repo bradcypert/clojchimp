@@ -11,7 +11,7 @@
   (get-campaigns [this] "Returns all campaigns for the user")
   (get-campaign [this id] "Returns a specific campaign by ID")
   (delete-campaign [this id] "Deletes a current campaign by ID")
-  (cancel-campaign [this id] "Cancels a current campaign. MailChimp Pro only")
+  (cancel-campaign [this id body] "Cancels a current campaign. MailChimp Pro only")
   (get-campaign-feedback [this id] "Gets feedback for a campign by its campaign ID")
   (get-campaign-feedback-by-id [this campId id] "Gets a specific feedback from a campaign by campaignID & feedbackID")
   (delete-campaign-feedback [this campId id] "Deletes a specific feedback item from a campaign by campaignID & feedbackID")
@@ -35,25 +35,33 @@
 
 (defrecord ChimpClient [^String user ^String api-key]
   Client
-  (GET [_ url]
-    (:body (httpclient/get url {:basic-auth [user api-key]
-                                :as :json})))
+  (GET [this endpoint]
+    (:body (httpclient/get
+             (apply str (generate-api-url this api-key) endpoint)
+             {:basic-auth [user api-key]
+              :as :json})))
 
-  (DELETE [_ url]
-    (:body (httpclient/delete url {:basic-auth [user api-key]
-                                   :as :json})))
+  (DELETE [this endpoint]
+    (:body (httpclient/delete
+             (apply str (generate-api-url this api-key) endpoint)
+             {:basic-auth [user api-key]
+              :as :json})))
 
-  (POST [_ url body]
-    (:body (httpclient/post url {:basic-auth [user api-key]
-                                 :as :clojure
-                                 :form-params body
-                                 :content-type :json})))
+  (POST [this endpoint body]
+    (:body (httpclient/post
+             (apply str (generate-api-url this api-key) endpoint)
+             {:basic-auth [user api-key]
+              :as :clojure
+              :form-params body
+              :content-type :json})))
 
-  (PATCH [_ url body]
-    (:body (httpclient/patch url {:basic-auth [user api-key]
-                                  :as :clojure
-                                  :form-params body
-                                  :content-type :json})))
+  (PATCH [this endpoint body]
+    (:body (httpclient/patch
+             (apply str (generate-api-url this api-key) endpoint)
+             {:basic-auth [user api-key]
+              :as :clojure
+              :form-params body
+              :content-type :json})))
 
   (generate-api-url [_ api-key]
     (str "https://" (subs api-key
@@ -61,100 +69,76 @@
                           (count api-key)) ".api.mailchimp.com/3.0"))
 
   (get-campaigns [this]
-    (GET this
-         (str (generate-api-url this api-key) "/campaigns")))
+    (GET this "/campaigns"))
 
   (get-campaign [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/campaigns/" id)))
+    (GET this '("/campaigns/" id)))
 
   (delete-campaign [this id]
-    (DELETE this
-            (str (generate-api-url this api-key) "/campaigns/" id)))
+    (DELETE this '("/campaigns/" id)))
 
-  (cancel-campaign [this id]
-    (POST this
-          (str (generate-api-url this api-key) "/campaigns/" id "/actions/cancel-send") {}))
+  (cancel-campaign [this id body]
+    (POST this '( "/campaigns/" id "/actions/cancel-send") body))
 
   (get-campaign-feedback [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/campaigns/" id "/feedback")))
+    (GET this '("/campaigns/" id "/feedback")))
 
   (get-campaign-feedback-by-id [this campId id]
-    (GET this
-         (str (generate-api-url this api-key) "/campaigns/" campId "/feedback/" id)))
+    (GET this '("/campaigns/" campId "/feedback/" id)))
 
   (delete-campaign-feedback [this campId id]
-    (DELETE this
-            (str (generate-api-url this api-key) "/campaigns/" campId "/feedback/" id)))
+    (DELETE this '("/campaigns/" campId "/feedback/" id)))
 
   (get-conversations [this]
-    (GET this
-         (str (generate-api-url this api-key) "/conversations")))
+    (GET this "/conversations"))
 
   (get-conversation [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/conversations/" id)))
+    (GET this '("/conversations/" id)))
 
   (get-conversation-messages [this campId]
-    (GET this
-         (str (generate-api-url this api-key) "/conversations/" campId "/messages")))
+    (GET this '("/conversations/" campId "/messages")))
 
   (get-conversation-message [this campId id]
-    (GET this
-         (str (generate-api-url this api-key) "/conversations/" campId "/messages/" id)))
+    (GET this '("/conversations/" campId "/messages/" id)))
 
   (get-lists [this]
-    (GET this
-         (str (generate-api-url this api-key) "/lists")))
+    (GET this "/lists"))
 
   (get-list [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/lists/" id)))
+    (GET this '("/lists/" id)))
 
   (delete-list [this id]
-    (DELETE this
-            (str (generate-api-url this api-key) "/lists/" id)))
+    (DELETE this '("/lists/" id)))
 
   (create-list [this body]
-    (POST this
-          (str (generate-api-url this api-key) "/lists") body))
+    (POST this "/lists" body))
 
   (update-list [this id body]
-    (PATCH this
-           (str (generate-api-url this api-key) "/lists/" id) body))
+    (PATCH this '("/lists/" id) body))
 
   (get-list-abuse-reports [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/lists/" id "/abuse-reports")))
+    (GET this '("/lists/" id "/abuse-reports")))
 
   (get-list-abuse-report [this listId id]
-    (GET this
-         (str (generate-api-url this api-key) "/lists/" listId "/abuse-reports/" id)))
+    (GET this '("/lists/" listId "/abuse-reports/" id)))
 
   (get-list-activity [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/lists/" id "/activity")))
+    (GET this '("/lists/" id "/activity")))
 
   (get-list-clients [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/list/" id "/clients")))
+    (GET this '("/list/" id "/clients")))
 
   (get-list-growth-history [this id]
-    (GET this
-         (str (generate-api-url this api-key) "/list" id "/growth-history")))
+    (GET this '("/list" id "/growth-history")))
 
   (get-list-growth-history-for-month [this listId id]
-    (GET this
-         (str (generate-api-url this api-key) "/list" listId "/growth-history/" id)))
+    (GET this '("/list" listId "/growth-history/" id)))
 
   (create-member-for-list [this listId body]
-    (POST this
-         (str (generate-api-url this api-key) "/list" listId "/members") body))
+    (POST this '("/list" listId "/members") body))
 
   (get-members-for-list [this listId]
-    (GET this
-         (str (generate-api-url this api-key) "/list" listId "/members"))))
+    (GET this '("/list" listId "/members"))))
 
 (defn create-client [user api-key]
   (->ChimpClient user api-key))
