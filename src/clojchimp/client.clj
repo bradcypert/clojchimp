@@ -56,7 +56,7 @@
               :content-type :json})))
 
   (PATCH [this endpoint body]
-    (println (httpclient/patch
+    (:body (httpclient/patch
              (apply str (generate-api-url this api-key) endpoint)
              {:basic-auth [user api-key]
               :as :json

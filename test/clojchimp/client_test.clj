@@ -23,5 +23,20 @@
       (is (= (get-campaign client 100) {:called true})))
 
     (testing "cancel-campaign should call appropriate url"
-      (is (= (cancel-campaign client 100 {}) {:called true})))))
+      (is (= (cancel-campaign client 100 {}) {:called true})))
+
+    (testing "cancel-campaign should call appropriate url"
+      (is (= (get-campaign-feedback client 100) {:called true})))
+
+    (testing "cancel-campaign should call appropriate url"
+      (is (= (get-campaign-feedback-by-id client 100 5) {:called true})))
+
+    (testing "cancel-campaign should call appropriate url"
+      (is (= (delete-campaign-feedback client 100 5) {:called true})))
+
+    (testing "cancel-campaign should call appropriate url"
+      (is (= (get-conversation client 1) {:called true})))
+
+    (testing "cancel-campaign should call appropriate url"
+      (is (= (get-conversations client) {:called true})))))
 
