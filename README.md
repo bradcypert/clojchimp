@@ -1,4 +1,7 @@
 # clojchimp
+[![Clojars Project](http://clojars.org/clojchimp/latest-version.svg)](http://clojars.org/clojchimp)
+
+[![Build Status](https://travis-ci.org/bradcypert/clojchimp.svg?branch=master)](https://travis-ci.org/bradcypert/clojchimp)
 
 A lightweight Clojure library designed to interface with MailChimp's API.
 
