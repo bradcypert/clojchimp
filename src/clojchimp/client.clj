@@ -51,15 +51,15 @@
     (:body (httpclient/post
              (apply str (generate-api-url this api-key) endpoint)
              {:basic-auth [user api-key]
-              :as :clojure
+              :as :json
               :form-params body
               :content-type :json})))
 
   (PATCH [this endpoint body]
-    (:body (httpclient/patch
+    (println (httpclient/patch
              (apply str (generate-api-url this api-key) endpoint)
              {:basic-auth [user api-key]
-              :as :clojure
+              :as :json
               :form-params body
               :content-type :json})))
 
@@ -72,40 +72,40 @@
     (GET this "/campaigns"))
 
   (get-campaign [this id]
-    (GET this '("/campaigns/" id)))
+    (GET this (list "/campaigns/" id)))
 
   (delete-campaign [this id]
-    (DELETE this '("/campaigns/" id)))
+    (DELETE this (list "/campaigns/" id)))
 
   (cancel-campaign [this id body]
-    (POST this '( "/campaigns/" id "/actions/cancel-send") body))
+    (POST this (list "/campaigns/" id "/actions/cancel-send") body))
 
   (get-campaign-feedback [this id]
-    (GET this '("/campaigns/" id "/feedback")))
+    (GET this (list "/campaigns/" id "/feedback")))
 
   (get-campaign-feedback-by-id [this campId id]
-    (GET this '("/campaigns/" campId "/feedback/" id)))
+    (GET this (list "/campaigns/" campId "/feedback/" id)))
 
   (delete-campaign-feedback [this campId id]
-    (DELETE this '("/campaigns/" campId "/feedback/" id)))
+    (DELETE this (list "/campaigns/" campId "/feedback/" id)))
 
   (get-conversations [this]
     (GET this "/conversations"))
 
   (get-conversation [this id]
-    (GET this '("/conversations/" id)))
+    (GET this (list "/conversations/" id)))
 
   (get-conversation-messages [this campId]
-    (GET this '("/conversations/" campId "/messages")))
+    (GET this (list "/conversations/" campId "/messages")))
 
   (get-conversation-message [this campId id]
-    (GET this '("/conversations/" campId "/messages/" id)))
+    (GET this (list "/conversations/" campId "/messages/" id)))
 
   (get-lists [this]
     (GET this "/lists"))
 
   (get-list [this id]
-    (GET this '("/lists/" id)))
+    (GET this (list "/lists/" id)))
 
   (delete-list [this id]
     (DELETE this '("/lists/" id)))
@@ -114,31 +114,31 @@
     (POST this "/lists" body))
 
   (update-list [this id body]
-    (PATCH this '("/lists/" id) body))
+    (PATCH this (list "/lists/" id) body))
 
   (get-list-abuse-reports [this id]
-    (GET this '("/lists/" id "/abuse-reports")))
+    (GET this (list "/lists/" id "/abuse-reports")))
 
   (get-list-abuse-report [this listId id]
-    (GET this '("/lists/" listId "/abuse-reports/" id)))
+    (GET this (list "/lists/" listId "/abuse-reports/" id)))
 
   (get-list-activity [this id]
-    (GET this '("/lists/" id "/activity")))
+    (GET this (list "/lists/" id "/activity")))
 
   (get-list-clients [this id]
-    (GET this '("/list/" id "/clients")))
+    (GET this (list "/list/" id "/clients")))
 
   (get-list-growth-history [this id]
-    (GET this '("/list" id "/growth-history")))
+    (GET this (list "/list" id "/growth-history")))
 
   (get-list-growth-history-for-month [this listId id]
-    (GET this '("/list" listId "/growth-history/" id)))
+    (GET this (list "/list" listId "/growth-history/" id)))
 
   (create-member-for-list [this listId body]
-    (POST this '("/list" listId "/members") body))
+    (POST this (list "/list" listId "/members") body))
 
   (get-members-for-list [this listId]
-    (GET this '("/list" listId "/members"))))
+    (GET this (list "/list" listId "/members"))))
 
 (defn create-client [user api-key]
   (->ChimpClient user api-key))
