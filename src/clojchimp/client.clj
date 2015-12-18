@@ -141,4 +141,4 @@
     (GET this (list "/list" listId "/members"))))
 
 (defn create-client [user api-key]
-  (-> ChimpClient user api-key))
+  (->ChimpClient user api-key))
