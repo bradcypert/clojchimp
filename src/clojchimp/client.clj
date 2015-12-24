@@ -13,25 +13,25 @@
   (delete-campaign [this id] "Deletes a current campaign by ID.")
   (cancel-campaign [this id body] "Cancels a current campaign. MailChimp Pro only.")
   (get-campaign-feedback [this id] "Gets feedback for a campign by its campaign ID.")
-  (get-campaign-feedback-by-id [this campId id] "Gets a specific feedback from a campaign by campaignID & feedbackID.")
-  (delete-campaign-feedback [this campId id] "Deletes a specific feedback item from a campaign by campaignID & feedbackID.")
+  (get-campaign-feedback-by-id [this camp-id id] "Gets a specific feedback from a campaign by campaignID & feedbackID.")
+  (delete-campaign-feedback [this camp-id id] "Deletes a specific feedback item from a campaign by campaignID & feedbackID.")
   (get-conversations [this] "Returns all conversations for the user.")
   (get-conversation [this id] "Returns a specific conversation by ID.")
-  (get-conversation-messages [this campId] "Returns all messages for a given campaign ID.")
-  (get-conversation-message [this campId id] "Returns a conversation for a campaign, given campaignID and the ID of the conversation.")
+  (get-conversation-messages [this camp-id] "Returns all messages for a given campaign ID.")
+  (get-conversation-message [this camp-id id] "Returns a conversation for a campaign, given campaignID and the ID of the conversation.")
   (get-lists [this] "Returns all lists for the user.")
   (get-list [this id] "Returns a specific list by its ID.")
   (delete-list [this id] "Deletes a list by ID.")
   (create-list [this body] "Creates a new list.")
   (update-list [this id body] "Updates a list by its ID.")
   (get-list-abuse-reports [this id] "Gets the abuse reports for a specific list by its ID.")
-  (get-list-abuse-report [this listId id] "Get details for a specific report by ListID & ReportID.")
+  (get-list-abuse-report [this list-id id] "Get details for a specific report by ListID & ReportID.")
   (get-list-activity [this id] "Gets activity for a specific list.")
   (get-list-clients [this id] "Gets top email clients for a specific list.")
   (get-list-growth-history [this id] "Gets growth history for a specific list.")
-  (get-list-growth-history-for-month [this listId month] "Gets growth history for a list for a specific month.")
-  (create-member-for-list [this listId body] "Creates a new member and associates them with the provided listId.")
-  (get-members-for-list [this listId] "Gets all members for a given list."))
+  (get-list-growth-history-for-month [this list-id month] "Gets growth history for a list for a specific month.")
+  (create-member-for-list [this list-id body] "Creates a new member and associates them with the provided listId.")
+  (get-members-for-list [this list-id] "Gets all members for a given list."))
 
 (defrecord ChimpClient [^String user ^String api-key]
   Client
@@ -83,11 +83,11 @@
   (get-campaign-feedback [this id]
     (GET this (list "/campaigns/" id "/feedback")))
 
-  (get-campaign-feedback-by-id [this campId id]
-    (GET this (list "/campaigns/" campId "/feedback/" id)))
+  (get-campaign-feedback-by-id [this camp-id id]
+    (GET this (list "/campaigns/" camp-id "/feedback/" id)))
 
-  (delete-campaign-feedback [this campId id]
-    (DELETE this (list "/campaigns/" campId "/feedback/" id)))
+  (delete-campaign-feedback [this camp-id id]
+    (DELETE this (list "/campaigns/" camp-id "/feedback/" id)))
 
   (get-conversations [this]
     (GET this "/conversations"))
@@ -95,11 +95,11 @@
   (get-conversation [this id]
     (GET this (list "/conversations/" id)))
 
-  (get-conversation-messages [this campId]
-    (GET this (list "/conversations/" campId "/messages")))
+  (get-conversation-messages [this camp-id]
+    (GET this (list "/conversations/" camp-id "/messages")))
 
-  (get-conversation-message [this campId id]
-    (GET this (list "/conversations/" campId "/messages/" id)))
+  (get-conversation-message [this camp-id id]
+    (GET this (list "/conversations/" camp-id "/messages/" id)))
 
   (get-lists [this]
     (GET this "/lists"))
@@ -119,8 +119,8 @@
   (get-list-abuse-reports [this id]
     (GET this (list "/lists/" id "/abuse-reports")))
 
-  (get-list-abuse-report [this listId id]
-    (GET this (list "/lists/" listId "/abuse-reports/" id)))
+  (get-list-abuse-report [this list-id id]
+    (GET this (list "/lists/" list-id "/abuse-reports/" id)))
 
   (get-list-activity [this id]
     (GET this (list "/lists/" id "/activity")))
@@ -131,14 +131,14 @@
   (get-list-growth-history [this id]
     (GET this (list "/list" id "/growth-history")))
 
-  (get-list-growth-history-for-month [this listId id]
-    (GET this (list "/list" listId "/growth-history/" id)))
+  (get-list-growth-history-for-month [this list-id id]
+    (GET this (list "/list" list-id "/growth-history/" id)))
 
-  (create-member-for-list [this listId body]
-    (POST this (list "/list" listId "/members") body))
+  (create-member-for-list [this list-id body]
+    (POST this (list "/list" list-id "/members") body))
 
-  (get-members-for-list [this listId]
-    (GET this (list "/list" listId "/members"))))
+  (get-members-for-list [this list-id]
+    (GET this (list "/list" list-id "/members"))))
 
 (defn create-client [user api-key]
   (->ChimpClient user api-key))
