@@ -104,41 +104,41 @@
   (get-lists [this]
     (GET this "/lists"))
 
-  (get-list [this id]
-    (GET this (list "/lists/" id)))
+  (get-list [this list-id]
+    (GET this (list "/lists/" list-id)))
 
-  (delete-list [this id]
-    (DELETE this '("/lists/" id)))
+  (delete-list [this list-id]
+    (DELETE this '("/lists/" list-id)))
 
   (create-list [this body]
     (POST this "/lists" body))
 
-  (update-list [this id body]
-    (PATCH this (list "/lists/" id) body))
+  (update-list [this list-id body]
+    (PATCH this (list "/lists/" list-id) body))
 
-  (get-list-abuse-reports [this id]
-    (GET this (list "/lists/" id "/abuse-reports")))
+  (get-list-abuse-reports [this list-id]
+    (GET this (list "/lists/" list-id "/abuse-reports")))
 
   (get-list-abuse-report [this list-id id]
     (GET this (list "/lists/" list-id "/abuse-reports/" id)))
 
-  (get-list-activity [this id]
-    (GET this (list "/lists/" id "/activity")))
+  (get-list-activity [this list-id]
+    (GET this (list "/lists/" list-id "/activity")))
 
-  (get-list-clients [this id]
-    (GET this (list "/list/" id "/clients")))
+  (get-list-clients [this list-id]
+    (GET this (list "/lists/" list-id "/clients")))
 
-  (get-list-growth-history [this id]
-    (GET this (list "/list" id "/growth-history")))
+  (get-list-growth-history [this list-id]
+    (GET this (list "/lists/" list-id "/growth-history")))
 
   (get-list-growth-history-for-month [this list-id id]
-    (GET this (list "/list" list-id "/growth-history/" id)))
+    (GET this (list "/lists/" list-id "/growth-history/" id)))
 
   (create-member-for-list [this list-id body]
-    (POST this (list "/list" list-id "/members") body))
+    (POST this (list "/lists/" list-id "/members") body))
 
   (get-members-for-list [this list-id]
-    (GET this (list "/list" list-id "/members"))))
+    (GET this (list "/lists/" list-id "/members"))))
 
 (defn create-client [user api-key]
   (->ChimpClient user api-key))
