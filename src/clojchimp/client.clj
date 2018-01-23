@@ -1,5 +1,5 @@
 (ns clojchimp.client
-  (require [clj-http.client :as httpclient]))
+  (:require [clj-http.client :as httpclient]))
 
 (defprotocol Client
   "Client for interfacing with MailChimp API."
