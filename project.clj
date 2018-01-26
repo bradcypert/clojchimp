@@ -1,4 +1,4 @@
-(defproject clojchimp "1.0.2"
+(defproject clojchimp "1.0.3"
   :description "A small mailchimp client written in Clojure"
   :url "http://github.com/bradcypert/clojchimp"
   :license {:name "MIT"
