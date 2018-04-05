@@ -20,7 +20,7 @@ A lightweight Clojure library designed to interface with MailChimp's API.
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2018 Brad Cypert
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
